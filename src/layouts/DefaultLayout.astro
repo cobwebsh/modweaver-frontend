@@ -47,28 +47,9 @@
 
 <script>
     if (window.location.pathname == "/" || window.location.pathname == "/home") {
-        console.log("f")
-        document.getElementById("nav_home").style.textDecoration = "none";
+        document.getElementById("nav_home").style.textDecoration = "underline";
     }
     else if (window.location.pathname == "/mods") {
-        console.log("f")
-        document.getElementById("nav_mods").style.textDecoration = "none";
+        document.getElementById("nav_mods").style.textDecoration = "underline";
     }
-    console.log("f")
-
-    import apiPath from "../imports/imports"
-    console.log(apiPath)
-    let projects = fetch(apiPath + "/list_projects").then(function resp(response) {
-        return response.json().then(function parse(data) {
-            console.log("h")
-            for (let i = 0; i > data.length; i++) {
-                console.log(data[i])
-                let div = document.getElementById("h")
-                let mod_element = document.createElement("p")
-                let text_node = document.createTextNode("h")
-                div.appendChild(text_node)
-                document.appendChild(div)
-            }
-        })
-    })
 </script>

@@ -6,5 +6,35 @@
 <DefaultLayout></DefaultLayout>
 <div id="mods">
     <p> Mods: </p>
-    <p id="h"></p>
+    <script>
+    /*    import apiPath from "../imports/imports"
+    console.log(apiPath)
+    let projects = fetch(apiPath + "/list_projects").then(function (response) {
+        return response.json().then(function (daa) {
+            console.log("h")
+            for (let i = 0; i > data.length; i++) {
+                console.log(data[i])
+                let div = document.getElementById("h")
+                let mod_element = document.createElement("p")
+                let text_node = document.createTextNode("h")
+                div.appendChild(text_node)
+                document.appendChild(div)
+            }
+        })
+    })*/
+    var tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+    var projects = fetch('http://localhost:5000/api/list_projects').then(function (response) {
+        return response.json();
+    }).then(function (data) {
+        console.log(data);
+        for (var i = 0; i < data.length; i++) {
+            var div = document.getElementById("mods");
+            var mod_element = document.createElement("p");
+            var text_node = document.createTextNode(data[i] );
+            var line_break = document.createElement("br");
+            div.appendChild(text_node);
+            div.appendChild(line_break);
+        }
+    });
+    </script>
 </div>
