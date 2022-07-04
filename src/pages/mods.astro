@@ -29,10 +29,13 @@
         console.log(data);
         for (var i = 0; i < data.length; i++) {
             var div = document.getElementById("mods");
-            var mod_element = document.createElement("p");
-            var text_node = document.createTextNode(data[i] );
+            var mod_element = document.createElement("a");
+            var text_node = document.createTextNode(data[i]);
             var line_break = document.createElement("br");
-            div.appendChild(text_node);
+            var url = window.location.origin + "/mod?mod=" + data[i]
+            mod_element.appendChild(text_node)
+            mod_element.setAttribute("href", url)
+            div.appendChild(mod_element);
             div.appendChild(line_break);
         }
     });
