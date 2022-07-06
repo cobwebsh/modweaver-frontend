@@ -35,6 +35,7 @@
             var url = window.location.origin + "/mod?mod=" + data[i]
             mod_element.appendChild(text_node)
             mod_element.setAttribute("href", url)
+            mod_element.style.textDecoration = "underline"
             div.appendChild(mod_element);
             div.appendChild(line_break);
         }

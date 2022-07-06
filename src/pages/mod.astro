@@ -6,56 +6,77 @@ import NotFound from "../components/NotFound.astro";
 
 <DefaultLayout />
 <div class="column-left">
-    <img id="mod-icon">
-    <p id="mod-name">Loading...</p>
-    <p id="mod-auther">Loading...</p>
-    <p id="mod-summary">Loading...</p>
-    <br/>
-    <p id="mod-id">Loading...</p>
-</div>
-<div class="column-centre">
-    <p id="mod-body">Loading...</p>
+    <div id="mod-img-div">
+        <div class="ohmyimg">
+            <img style="display:none" id="mod-icon">
+            <br />
+        </div>
+        <div id="ohmytext">
+            <p style="display:none" id="mod-name">Loading...</p>
+            <br />
+            <p style="display:none" id="mod-author">Loading...</p>
+        </div>
+        <div id="ohmytext">
+            <br />
+            <br />
+            <p style="display:none" id="mod-body">Loading...</p>
+            <br />
+            <br />
+            <p style="display:none" id="mod-id">Loading...</p>    
+        </div>
+    </div>
+
 </div>
 <NotFound />
 
 <script>
+
     let urlc = window.location
     let new_url = new URL(urlc.toString())
     let urlParams = new_url.searchParams
     let modToGet = urlParams.get("mod")
+    let versionToGet = urlParams.get("version")
     let notFound = document.getElementById("notfound")
 
     fetch("http://127.0.0.1:5000/api/list_projects").then(function (response) {
         response.json().then(function (data) {
             if (modToGet != null) {
-                console.log(data)
-                for (var i = 0; i < data.length; i++) {
-                    if (modToGet == data[i]) {
-                        notFound.style.display = "none"
+                if (versionToGet == null) {
+                    console.log(data)
+                    for (var i = 0; i < data.length; i++) {
+                        if (modToGet == data[i]) {
+                            notFound.style.display = "none"
 
-                        fetch("http://127.0.0.1:5000/api/project/" + modToGet).then(function (response) {
-                            response.json().then(function (data) {
-                                let modName = data["name"]
-                                let modNameElement = document.getElementById("mod-name")
-                                modNameElement.innerText = modName
-                                let modIdElement = document.getElementById("mod-id")
-                                modIdElement.innerText = "ID: " + modToGet
-                                let modSummary = data["summary"]
-                                let modSummaryElement = document.getElementById("mod-summary")
-                                modSummaryElement.innerText = modSummary
-                                let modIconElement = document.getElementById("mod-icon")
-                                if (data["icon_url"] != null) {
-                                    modIconElement.setAttribute("src", data["icon_url"])
-                                } else {
-                                    modIconElement.style.display = "none"
-                                }
-                                let modAuthor = data["author"]
-                                let modAuthorElement = document.getElementById("mod-auther")
-                                modAuthorElement.innerText = "by " + modAuthor
+                            fetch("http://127.0.0.1:5000/api/project/" + modToGet).then(function (response) {
+                                response.json().then(function (data) {
+                                    let modName = data["name"]
+                                    let modNameElement = document.getElementById("mod-name")
+                                    modNameElement.innerText = modName
+                                    modNameElement.style.display = "inline-flex"
+                                    let modIdElement = document.getElementById("mod-id")
+                                    modIdElement.innerText = "ID: " + modToGet
+                                    modIdElement.style.display = "inline-flex"
+                                    let modIconElement = document.getElementById("mod-icon")
+                                    if (data["icon_url"] != null) {
+                                        modIconElement.setAttribute("src", data["icon_url"])
+                                        modIconElement.style.display = "inline-flex"
+                                    }
+                                    let modAuthor = data["author"]
+                                    let modAuthorElement = document.getElementById("mod-author")
+                                    modAuthorElement.innerText = "by " + modAuthor
+                                    modAuthorElement.style.display = "inline-flex"
+                                    let modBody = data["description"]
+                                    let modBodyElement = document.getElementById("mod-body")
+                                    modBodyElement.innerText = modBody
+                                    modBodyElement.style.display = "inline-flex"
+                                })
                             })
-                        })
 
+                        }
                     }
+                } else {
+                    notFound.style.display = "none"
+
                 }
             } else {
             }
@@ -63,7 +84,6 @@ import NotFound from "../components/NotFound.astro";
     })
 </script>
 <style>
-
     #mod-name {
         font-weight: bolder;
         font-size: 2rem;
@@ -74,26 +94,35 @@ import NotFound from "../components/NotFound.astro";
         margin-left: 4rem;
         padding: 1rem;
         border-radius: 25px;
-        max-width: 20rem;
-    }
-
-    .column-centre {
-        text-align: center;
-        position: absolute;
-        float: inline-end;
-        background-color: #26292f;
-        margin-left: 4rem;
-        padding: 1rem;
-        border-radius: 25px;
-        max-width: 20rem;
-        display: flex;
-        justify-self: center;
-        justify-content: center;
+        max-width: 100rem;
+        min-width: 100rem;
+        flex: content;
+        display: inline-table;
     }
 
     #mod-icon {
         padding-left: 2px;
         width: 125px;
         height: 125px;
+        border-radius: 25px;
+        vertical-align: middle;
+        display: inline-block;
+        float: left;
+        margin-right: 1.5rem;
+    }
+
+    .mod-img-div {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .ohmytext {
+        text-align: center;
+        vertical-align: middle;
+        display: inline-block;
+        float: right;
+        margin-left: 28rem;
     }
 </style>
