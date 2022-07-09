@@ -23,7 +23,8 @@
         })
     })*/
     var tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-    var projects = fetch('http://localhost:5000/api/list_projects').then(function (response) {
+    let apiBase = "http://modweaver-backend.herokuapp.com/api/"
+    var projects = fetch(apiBase + 'list_projects').then(function (response) {
         return response.json();
     }).then(function (data) {
         console.log(data);

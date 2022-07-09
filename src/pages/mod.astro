@@ -37,8 +37,8 @@ import NotFound from "../components/NotFound.astro";
     let modToGet = urlParams.get("mod")
     let versionToGet = urlParams.get("version")
     let notFound = document.getElementById("notfound")
-
-    fetch("http://127.0.0.1:5000/api/list_projects").then(function (response) {
+    let apiBase = "http://modweaver-backend.herokuapp.com/api/"
+    fetch(apiBase + "list_projects").then(function (response) {
         response.json().then(function (data) {
             if (modToGet != null) {
                 if (versionToGet == null) {
@@ -47,7 +47,7 @@ import NotFound from "../components/NotFound.astro";
                         if (modToGet == data[i]) {
                             notFound.style.display = "none"
 
-                            fetch("http://127.0.0.1:5000/api/project/" + modToGet).then(function (response) {
+                            fetch(apiBase + "project/" + modToGet).then(function (response) {
                                 response.json().then(function (data) {
                                     let modName = data["name"]
                                     let modNameElement = document.getElementById("mod-name")
