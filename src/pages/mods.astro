@@ -1,6 +1,5 @@
 ---
     import DefaultLayout from "../layouts/DefaultLayout.astro";
-    import apiPath from "../imports/imports";
 ---
 
 <DefaultLayout></DefaultLayout>
@@ -22,9 +21,10 @@
             }
         })
     })*/
+    let API_URI = "http://api.modweaver.org/api/"
+    console.log(API_URI)
     var tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-    let apiBase = "http://modweaver-backend.herokuapp.com/api/"
-    var projects = fetch(apiBase + 'list_projects').then(function (response) {
+    var projects = fetch(API_URI + 'list_projects').then(function (response) {
         return response.json();
     }).then(function (data) {
         console.log(data);

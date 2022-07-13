@@ -5,40 +5,34 @@ import NotFound from "../components/NotFound.astro";
 ---
 
 <DefaultLayout />
+<div class="something">
+    <img style="display:none" id="mod-icon">
+    <br />
+    <p style="display: none" id="mod-name">Loading...</p>
+    <br />
+    <p style="display:none" id="mod-author">Loading...</p>
+    <a style="display: none;" id="mod-download" class="download">Download</a>
+    <iframe style="display: none;" id="mod-download-iframe"></iframe>
+</div>
 <div class="column-left">
-    <div id="mod-img-div">
-        <div class="ohmyimg">
-            <img style="display:none" id="mod-icon">
-            <br />
-        </div>
-        <div id="ohmytext">
-            <p style="display:none" id="mod-name">Loading...</p>
-            <br />
-            <p style="display:none" id="mod-author">Loading...</p>
-        </div>
-        <div id="ohmytext">
-            <br />
-            <br />
-            <p style="display:none" id="mod-body">Loading...</p>
-            <br />
-            <br />
-            <p style="display:none" id="mod-id">Loading...</p>    
-        </div>
-    </div>
+    <p style="display:none" id="mod-body" class="item">Loading...</p>
+    <br />
+    <br />
+    <div id="versions">
 
+    </div>
 </div>
 <NotFound />
 
-<script>
-
+<script is:inline>
+    let API_URI = "http://api.modweaver.org/api/"
     let urlc = window.location
     let new_url = new URL(urlc.toString())
     let urlParams = new_url.searchParams
     let modToGet = urlParams.get("mod")
     let versionToGet = urlParams.get("version")
     let notFound = document.getElementById("notfound")
-    let apiBase = "http://modweaver-backend.herokuapp.com/api/"
-    fetch(apiBase + "list_projects").then(function (response) {
+    fetch(API_URI + "list_projects").then(function (response) {
         response.json().then(function (data) {
             if (modToGet != null) {
                 if (versionToGet == null) {
@@ -46,29 +40,44 @@ import NotFound from "../components/NotFound.astro";
                     for (var i = 0; i < data.length; i++) {
                         if (modToGet == data[i]) {
                             notFound.style.display = "none"
-
-                            fetch(apiBase + "project/" + modToGet).then(function (response) {
+                            fetch(API_URI + "project/" + modToGet).then(function (response) {
                                 response.json().then(function (data) {
+
+
                                     let modName = data["name"]
                                     let modNameElement = document.getElementById("mod-name")
                                     modNameElement.innerText = modName
-                                    modNameElement.style.display = "inline-flex"
-                                    let modIdElement = document.getElementById("mod-id")
-                                    modIdElement.innerText = "ID: " + modToGet
-                                    modIdElement.style.display = "inline-flex"
+                                    modNameElement.style.display = "block"
+                                    //let modIdElement = document.getElementById("mod-id")
+                                    //modIdElement.innerText = "ID: " + modToGet
+                                    //modIdElement.style.display = "block"
                                     let modIconElement = document.getElementById("mod-icon")
                                     if (data["icon_url"] != null) {
                                         modIconElement.setAttribute("src", data["icon_url"])
-                                        modIconElement.style.display = "inline-flex"
+                                        modIconElement.style.display = "block"
                                     }
                                     let modAuthor = data["author"]
                                     let modAuthorElement = document.getElementById("mod-author")
                                     modAuthorElement.innerText = "by " + modAuthor
-                                    modAuthorElement.style.display = "inline-flex"
+                                    modAuthorElement.style.display = "block"
                                     let modBody = data["description"]
                                     let modBodyElement = document.getElementById("mod-body")
                                     modBodyElement.innerText = modBody
-                                    modBodyElement.style.display = "inline-flex"
+                                    modBodyElement.style.display = "block"
+
+                                    let modDownloadElement = document.getElementById("mod-download")
+                                    let latest_download_url = ""
+                                    data["versions"].forEach(element => {
+                                        if (element["version"] == data["latest_version"]) {
+                                            latest_download_url = element["url"]
+                                        }
+                                    });
+                                    //document.getElementById('mod-download').setAttribute('src', getLatestDownloadURL())
+                                    testt = data;
+
+                                    modDownloadElement.style.display = "block"
+                                    modDownloadElement.setAttribute("href", latest_download_url)
+
                                 })
                             })
 
@@ -91,7 +100,7 @@ import NotFound from "../components/NotFound.astro";
 
     .column-left {
         background-color: #26292f;
-        margin-left: 4rem;
+        margin-left: 1.5rem;
         padding: 1rem;
         border-radius: 25px;
         max-width: 100rem;
@@ -105,10 +114,9 @@ import NotFound from "../components/NotFound.astro";
         width: 125px;
         height: 125px;
         border-radius: 25px;
-        vertical-align: middle;
-        display: inline-block;
         float: left;
-        margin-right: 1.5rem;
+        margin-bottom: 0.5rem;
+        margin-right: 0.75rem;
     }
 
     .mod-img-div {
@@ -124,5 +132,23 @@ import NotFound from "../components/NotFound.astro";
         display: inline-block;
         float: right;
         margin-left: 28rem;
+    }
+
+    .item {}
+
+    .something {
+        margin-left: 1.5rem;
+    }
+
+    .download {
+        background-color: yellow;
+        color: black;
+        width: 5.75rem;
+        text-align: center;
+        height: 3.8ch;
+        padding: 5px;
+        padding-bottom: 25px;
+        border-radius: 25px;
+        margin-top: 10px;
     }
 </style>
