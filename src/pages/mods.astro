@@ -1,10 +1,11 @@
 ---
-    import DefaultLayout from "../layouts/DefaultLayout.astro";
+import DefaultLayout from "../layouts/DefaultLayout.astro";
+import Mod from "../components/Mod.astro";
 ---
 
 <DefaultLayout></DefaultLayout>
 <div id="mods">
-    <p> Mods: </p>
+    <p class="beep"> Mods: </p>
     <script>
     /*    import apiPath from "../imports/imports"
     console.log(apiPath)
@@ -25,21 +26,54 @@
     console.log(API_URI)
     var tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
     var projects = fetch(API_URI + 'list_projects').then(function (response) {
-        return response.json();
+    return response.json();
     }).then(function (data) {
-        console.log(data);
-        for (var i = 0; i < data.length; i++) {
-            var div = document.getElementById("mods");
-            var mod_element = document.createElement("a");
-            var text_node = document.createTextNode(data[i]);
-            var line_break = document.createElement("br");
-            var url = window.location.origin + "/mod?mod=" + data[i]
-            mod_element.appendChild(text_node)
-            mod_element.setAttribute("href", url)
-            mod_element.style.textDecoration = "underline"
-            div.appendChild(mod_element);
-            div.appendChild(line_break);
-        }
+        data.forEach(project => {
+            var projecth = fetch(API_URI + 'project/' + project).then(function (response) {
+                return response.json()
+            }).then(function (result) {
+                var main_div = document.getElementById("mods")
+                var mod_div = document.createElement("div")
+                var modNameElement = document.createElement("a")
+                var modSummaryElement = document.createElement("p")
+                var lineBreak = document.createElement("br")
+                mod_div.class = "mod-div"
+                mod_div.id = "mod-div"
+                modNameElement.innerText = result["name"]
+                modNameElement.setAttribute("href", window.location.origin + "/mod?mod=" + project)
+                modNameElement.style.fontWeight = "bold";
+                modNameElement.style.fontSize = "1.75vh"
+                modNameElement.id = "mmod-name"
+                modSummaryElement.id = "mmod-summary"
+                modSummaryElement.innerText = result["summary"]
+                main_div.appendChild(mod_div)
+                mod_div.appendChild(modNameElement)
+                mod_div.appendChild(lineBreak)
+                mod_div.appendChild(modSummaryElement)
+            }) 
+        });
     });
     </script>
 </div>
+<style is:global>
+    #mod-div {
+        margin-bottom: 2vw;
+        background-color: #26292f;
+        border-radius: 25px;
+        min-width: 2vw;
+        max-width: 45vw;
+        min-height: 2vw;
+        padding: 2vh;
+    }
+
+    .beep {
+        margin-bottom: 2vh;
+        font-size: 1.95vh;
+        font-weight: bolder;
+    }
+
+    #mmod-name:hover {
+        text-decoration: underline;
+    }
+
+</style>
