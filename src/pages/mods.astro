@@ -21,10 +21,10 @@ import DefaultLayout from "../layouts/DefaultLayout.astro";
             }
         })
     })*/
-    let API_URI = "https://api.modweaver.org/api/"
+    let API_URI = "https://api.modweaver.org/"
     console.log(API_URI)
     var tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-    var projects = fetch(API_URI + 'list_projects').then(function (response) {
+    var projects = fetch(API_URI + 'projects').then(function (response) {
     return response.json();
     }).then(function (data) {
         data.forEach(project => {
