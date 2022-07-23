@@ -25,14 +25,14 @@ import NotFound from "../components/NotFound.astro";
 <NotFound />
 
 <script is:inline>
-    let API_URI = "https://api.modweaver.org/api/"
+    let API_URI = "https://api.modweaver.org/"
     let urlc = window.location
     let new_url = new URL(urlc.toString())
     let urlParams = new_url.searchParams
     let modToGet = urlParams.get("mod")
     let versionToGet = urlParams.get("version")
     let notFound = document.getElementById("notfound")
-    fetch(API_URI + "list_projects").then(function (response) {
+    fetch(API_URI + "projects").then(function (response) {
         response.json().then(function (data) {
             if (modToGet != null) {
                 if (versionToGet == null) {
